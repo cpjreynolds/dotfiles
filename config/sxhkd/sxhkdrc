@@ -1,0 +1,64 @@
+# bspwm hotkeys
+
+# Quit
+super + shift + q
+    bspc quit
+
+# Close window
+super + x
+    bspc node -c
+
+# Toggle tile
+super + t
+    bspc node -t '~fullscreen'
+
+# Balance tree
+super + b
+    bspc node @focused:/ -B
+
+# Presel node for splitting
+super + shift + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+
+# Select nodes, or move
+super + {h,j,k,l}
+    bspc node -f {west,south,north,east}
+
+#################
+# Function Keys #
+#################
+
+{super + 1, super + 2}
+    bspc desktop --focus {prev,next}
+
+###################
+# Multimedia Keys #
+###################
+
+{XF86AudioMute,XF86AudioLowerVolume,XF86AudioRaiseVolume}
+    amixer -q sset Master {toggle,5%-,5%+}
+
+{XF86MonBrightnessDown,XF86MonBrightnessUp}
+    xbacklight {-dec,-inc} 5
+
+################
+# Applications #
+################
+
+super + f
+    firefox
+
+super + c
+    google-chrome-stable
+
+super + n
+    google-chrome-stable --incognito
+
+super + {Return, `}
+    urxvtc
+
+super + g
+    steam
+
+super + w
+    /home/cpjreynolds/wolfram/WolframDesktop/12.0/Executables/WolframDesktop

@@ -1,0 +1,21 @@
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=3
+GRUB_DISTRIBUTOR="Arch"
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 i915.enable_ips=0"
+GRUB_CMDLINE_LINUX=""
+
+# Preload both GPT and MBR modules so that they are not missed
+GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+
+# Uncomment to enable Hidden Menu, and optionally hide the timeout count
+#GRUB_HIDDEN_TIMEOUT=5
+#GRUB_HIDDEN_TIMEOUT_QUIET=true
+
+GRUB_TERMINAL_INPUT=console
+GRUB_TERMINAL_OUTPUT=gfxterm
+
+GRUB_GFXMODE=1280x850x16
+GRUB_GFXPAYLOAD_LINUX=2560x1700x32
+
+GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"
+GRUB_FONT="/boot/grub/fonts/unicode.pf2"

@@ -1,0 +1,5 @@
+#!/bin/sh
+while true; do
+    feh  --bg-fill --randomize '/home/cpjreynolds/.wallpapers'
+    sleep 5m
+done

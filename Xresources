@@ -1,0 +1,35 @@
+#include "/home/cpjreynolds/.colors/solarized"
+
+!!!!!!!!!!!
+!! URXVT !!
+!!!!!!!!!!!
+
+URxvt*depth: 32
+URxvt*buffered: true
+
+URxvt*jumpScroll: false
+URxvt*skipScroll: true
+
+URxvt*font: xft:DejaVu\ Sans\ Mono\ For\ Powerline:size=12:antialias=true
+
+URxvt*scrollstyle: plain
+
+URxvt*scrollBar: false
+URxvt*termName: rxvt-unicode
+
+URxvt*loginShell: true
+URxvt*internalBorder: 5
+URxvt*externalBorder: 0
+
+URxvt*dynamicColors: on
+
+!!!!!!!!!
+!! XFT !!
+!!!!!!!!!
+
+Xft.antialias: true
+Xft.autohint: false
+Xft.dpi: 168
+Xft.hinting: true
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault

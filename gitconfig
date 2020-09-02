@@ -1,0 +1,14 @@
+[user]
+	name = Cole Reynolds
+	email = cpjreynolds@gmail.com
+[push]
+	default = simple
+[alias]
+        lol = log --graph --decorate --pretty=oneline --abbrev-commit
+        lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	co = checkout
+[color]
+        branch = auto
+        diff = auto
+        interactive = auto
+        status = auto
