@@ -39,10 +39,10 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 " Filebrowser.
-Plugin 'scrooloose/nerdtree'
+"Plugin 'scrooloose/nerdtree'
 
 " Fuzzy file finder.
-Plugin 'kien/ctrlp.vim'
+"Plugin 'kien/ctrlp.vim'
 
 " Formatting
 Plugin 'chiel92/vim-autoformat'
@@ -51,7 +51,7 @@ Plugin 'chiel92/vim-autoformat'
 
 " Realtime completion.
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/ycm-generator'
+"Plugin 'rdnetto/ycm-generator'
 
 " == Syntax ==
 
@@ -61,29 +61,29 @@ Plugin 'scrooloose/syntastic'
 " == Language ==
 
 " Rust
-Plugin 'rust-lang/rust.vim'
+"Plugin 'rust-lang/rust.vim'
 
 " GLSL
-Plugin 'tikhomirov/vim-glsl'
+"Plugin 'tikhomirov/vim-glsl'
 
 " TOML
-Plugin 'cespare/vim-toml'
+"Plugin 'cespare/vim-toml'
 
 " C++
-Plugin 'octol/vim-cpp-enhanced-highlight'
+"Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Javascript
-Plugin 'pangloss/vim-javascript'
+"Plugin 'pangloss/vim-javascript'
 
 " Racket
-Plugin 'wlangstroth/vim-racket'
+"Plugin 'wlangstroth/vim-racket'
 
 " Haskell
-Plugin 'neovimhaskell/haskell-vim'
-Plugin 'alx741/vim-hindent'
+"Plugin 'neovimhaskell/haskell-vim'
+"Plugin 'alx741/vim-hindent'
 
 " Kotlin
-Plugin 'udalov/kotlin-vim'
+"Plugin 'udalov/kotlin-vim'
 
 " == Misc ==
 
@@ -229,7 +229,7 @@ let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 0
-let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
+"let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
 
 " == Statusline ==
 set statusline+=%#warningmsg#
@@ -242,8 +242,10 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+let g:syntastic_quiet_messages = { 'regex': 'snake_case\|superfluous-parens\|missing-module-docstring' }
 " == Syntastic - Racket Settings ==
-let g:syntastic_enable_racket_racket_checker = 1
+"let g:syntastic_enable_racket_racket_checker = 1
 " == Syntastic - Kotlin Settings ==
 " SLOW
 "let g:syntastic_kotlin_checkers = ['kotlinc']
@@ -252,6 +254,14 @@ let g:syntastic_enable_racket_racket_checker = 1
 " == Airline ==
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+""let g:airline_symbols.space = "\ua0"
+let g:airline_symbols.linenr = "= "
+
+let g:airline_theme = "solarized"
+let g:airline_solarized_bg = "dark"
 
 " == CtrlP ==
 let g:ctrlp_working_path_mode = 'ra'
@@ -326,17 +336,17 @@ augroup END
 " == Misc == {{{
 
 " Thoughtbot's fancy command completion function. (Thank you Thoughtbot).
-set wildmode=list:longest,list:full
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col -1] !~ '\k'
-        return "\<tab>"
-    else
-        return "<\c-p>"
-    endif
-endfunction
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <S-Tab> <c-n>
+"set wildmode=list:longest,list:full
+"function! InsertTabWrapper()
+"    let col = col('.') - 1
+"    if !col || getline('.')[col -1] !~ '\k'
+"        return "\<tab>"
+"    else
+"        return "<\c-p>"
+"    endif
+"endfunction
+"inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+"inoremap <S-Tab> <c-n>
 
 " }}}
 

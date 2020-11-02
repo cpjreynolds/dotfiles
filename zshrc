@@ -35,25 +35,6 @@ export CLICOLOR=1
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(rustc --print sysroot)/lib
-# export RUST_SRC_PATH=$HOME/rust/src # Rust source path for Racer.
-export PATH=$PATH:$HOME/scripts:$HOME/.cargo/bin
 export FPATH=$FPATH:$HOME/zpath
-export OCKTA_PATH=/home/cpjreynolds/.ockta
-export OCKTA_BINARY_DIR=/home/cpjreynolds/ockta/build
-export PATH=$PATH:$OCKTA_BINARY_DIR
 export PATH=$PATH:$HOME/.local/bin
-
-# Applications
-alias chrome='google-chrome-stable'
-
-# Development
-alias cb='cargo build'
-alias cbr='cargo build --release'
-alias cr='cargo run'
-alias crr='cargo run --release'
-alias rc='rustc'
-
-alias celar='clear'
-alias clr='clear'
 
