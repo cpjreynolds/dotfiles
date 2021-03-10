@@ -70,7 +70,7 @@ Plugin 'scrooloose/syntastic'
 "Plugin 'cespare/vim-toml'
 
 " C++
-"Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Javascript
 "Plugin 'pangloss/vim-javascript'
@@ -270,6 +270,10 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:rustfmt_autosave = 1
 
 " == C++ Syntax Highlighting ==
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
 let g:cpp_experimental_template_highlight = 1
 
 " == Scheme Autoformatting ==
@@ -320,6 +324,11 @@ augroup filetype_racket
     autocmd!
     " Run Autoformat on write.
     autocmd BufWritePre *.rkt :Autoformat
+augroup END
+
+augroup filetype_markdown
+    autocmd!
+    autocmd FileType markdown setlocal textwidth=100
 augroup END
 
 " Haskell file settings
