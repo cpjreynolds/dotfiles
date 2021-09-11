@@ -45,7 +45,7 @@ Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'kien/ctrlp.vim'
 
 " Formatting
-Plugin 'chiel92/vim-autoformat'
+"Plugin 'chiel92/vim-autoformat'
 
 " == Completion ==
 
@@ -313,19 +313,19 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
-" C++ file settings
+" C & C++ file settings
 augroup filetype_cpp
     autocmd!
     " Run Autoformat on write.
-    autocmd BufWritePre *.cpp,*.h :Autoformat
+    autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
 augroup END
 
 " Racket file settings
-augroup filetype_racket
-    autocmd!
+"augroup filetype_racket
+    "autocmd!
     " Run Autoformat on write.
-    autocmd BufWritePre *.rkt :Autoformat
-augroup END
+    "autocmd BufWritePre *.rkt :Autoformat
+"augroup END
 
 augroup filetype_markdown
     autocmd!
