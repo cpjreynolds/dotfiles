@@ -27,9 +27,12 @@ HISTFILE=~/.zhistory
 HISTSIZE=4096
 SAVEHIST=4096
 
+#osx necessity to get vim with python support.
+alias python=python3
+
 alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 
-export TERM=rxvt-unicode
+#export TERM=rxvt-unicode
 
 export CLICOLOR=1
 export LANG=en_US.UTF-8

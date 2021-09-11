@@ -50,8 +50,8 @@ Plugin 'chiel92/vim-autoformat'
 " == Completion ==
 
 " Realtime completion.
-Plugin 'Valloric/YouCompleteMe'
-"Plugin 'rdnetto/ycm-generator'
+ Plugin 'Valloric/YouCompleteMe'
+" Plugin 'rdnetto/ycm-generator'
 
 " == Syntax ==
 
@@ -183,7 +183,8 @@ set mouse=a
 set ttymouse=urxvt
 
 " Pane splitting settings.
-set diffopt+=vertical
+" set diffopt complained on macOS.
+"set diffopt+=vertical
 set splitbelow
 set splitright
 
