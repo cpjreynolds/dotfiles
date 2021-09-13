@@ -314,6 +314,7 @@ augroup filetype_vim
 augroup END
 
 " C & C++ file settings
+let g:c_syntax_for_h = 1
 augroup filetype_cpp
     autocmd!
     " Run Autoformat on write.

@@ -30,7 +30,7 @@ SAVEHIST=4096
 #osx necessity to get vim with python support.
 alias python=python3
 
-alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+eval $(thefuck --alias)
 
 #export TERM=rxvt-unicode
 
