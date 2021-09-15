@@ -192,6 +192,7 @@ set splitright
 set timeoutlen=1000
 set ttimeoutlen=0
 
+
 " }}}
 
 " == Key Mappings == {{{
@@ -213,11 +214,11 @@ noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
 " Convenience mappings
-nnoremap <leader>d :NERDTreeToggle<CR>
-nnoremap <leader>p :CtrlP<CR>
-nnoremap <leader>t :TagbarToggle<CR>
+"nnoremap <leader>d :NERDTreeToggle<CR>
+"nnoremap <leader>p :CtrlP<CR>
+"nnoremap <leader>t :TagbarToggle<CR>
+"nnoremap <leader>f :YcmCompleter Format<CR>
 nnoremap <leader>a za
-nnoremap <leader>f :Autoformat<CR>
 
 " }}}
 
@@ -259,7 +260,8 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 ""let g:airline_symbols.space = "\ua0"
-let g:airline_symbols.linenr = "= "
+" TODO: This might need to be conditional on osx or linux
+""let g:airline_symbols.linenr = "= "
 
 let g:airline_theme = "solarized"
 let g:airline_solarized_bg = "dark"
@@ -314,9 +316,13 @@ augroup filetype_vim
 augroup END
 
 " C & C++ file settings
-let g:c_syntax_for_h = 1
+let c_syntax_for_h = 1
+let c_no_comment_fold = 1
 augroup filetype_cpp
     autocmd!
+    " fold by syntax
+    autocmd Syntax c setlocal foldmethod=syntax
+    autocmd Syntax c setlocal foldlevel=1
     " Run Autoformat on write.
     autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
 augroup END
