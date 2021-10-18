@@ -38,8 +38,11 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+" Better folding
+Plugin 'konfekt/fastfold'
+
 " Filebrowser.
-"Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 
 " Fuzzy file finder.
 "Plugin 'kien/ctrlp.vim'
@@ -172,6 +175,9 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
+" Folding settings
+set foldcolumn=4
+
 " Distinguish the character limit with a colored column.
 set colorcolumn=+1
 
@@ -214,7 +220,7 @@ noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
 " Convenience mappings
-"nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>n :NERDTreeToggle<CR>
 "nnoremap <leader>p :CtrlP<CR>
 "nnoremap <leader>t :TagbarToggle<CR>
 "nnoremap <leader>f :YcmCompleter Format<CR>
@@ -229,7 +235,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
-let g:ycm_add_preview_to_completeopt = 1
+"let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 "let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
 
@@ -271,6 +277,10 @@ let g:ctrlp_working_path_mode = 'ra'
 
 " == Rust ==
 let g:rustfmt_autosave = 1
+
+" == FastFold ==
+"let g:fastfold_force = 1
+let g:fastfold_minlines = 0
 
 " == C++ Syntax Highlighting ==
 let g:cpp_class_scope_highlight = 1
@@ -322,7 +332,7 @@ augroup filetype_cpp
     autocmd!
     " fold by syntax
     autocmd Syntax c setlocal foldmethod=syntax
-    autocmd Syntax c setlocal foldlevel=1
+    autocmd Syntax c setlocal foldlevel=2
     " Run Autoformat on write.
     autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
 augroup END

@@ -2,6 +2,7 @@ BasedOnStyle: LLVM
 IndentWidth: 4
 PointerAlignment: Left
 DerivePointerAlignment: false
+BreakBeforeBraces: Stroustrup
 
 Language: Cpp
 AccessModifierOffset: -4
