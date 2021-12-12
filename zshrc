@@ -39,6 +39,12 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export FPATH=$FPATH:$HOME/zpath
-export PATH=$PATH:$HOME/.local/bin:$HOME/.gem/ruby/2.7.0/bin
+#export PATH=$PATH:$HOME/.local/bin:$HOME/.gem/ruby/2.7.0/bin
 
-
+#compdef pio
+_pio() {
+  eval $(env COMMANDLINE="${words[1,$CURRENT]}" _PIO_COMPLETE=complete-zsh pio)
+}
+if [[ "$(basename -- ${(%):-%x})" != "_pio" ]]; then
+  compdef _pio pio
+fi

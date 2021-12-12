@@ -44,6 +44,9 @@ Plugin 'konfekt/fastfold'
 " Filebrowser.
 Plugin 'scrooloose/nerdtree'
 
+" Commenting
+Plugin 'scrooloose/nerdcommenter'
+
 " Fuzzy file finder.
 "Plugin 'kien/ctrlp.vim'
 
@@ -76,7 +79,17 @@ Plugin 'scrooloose/syntastic'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Javascript
-"Plugin 'pangloss/vim-javascript'
+Plugin 'pangloss/vim-javascript'
+
+" HTML
+Plugin 'othree/html5.vim'
+
+" PHP
+"
+" TODO: phpcomplete fucked with what im assuming were the powerline fonts or the
+"       statusline.
+"Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'stanangeloff/php.vim'
 
 " Racket
 "Plugin 'wlangstroth/vim-racket'
@@ -177,6 +190,7 @@ set softtabstop=4
 
 " Folding settings
 set foldcolumn=4
+"set foldlevelstart=1
 
 " Distinguish the character limit with a colored column.
 set colorcolumn=+1
@@ -208,7 +222,7 @@ set ttimeoutlen=0
 map <Space> <leader>
 
 " Clear highlighting.
-nnoremap <leader>c :nohl<CR>
+" nnoremap <leader>c :nohl<CR>
 
 " When in visual mode, execute . as a normal mode command.
 vnoremap . :norm.<CR>
@@ -223,8 +237,10 @@ noremap <C-l> <C-w>l
 nnoremap <leader>n :NERDTreeToggle<CR>
 "nnoremap <leader>p :CtrlP<CR>
 "nnoremap <leader>t :TagbarToggle<CR>
-"nnoremap <leader>f :YcmCompleter Format<CR>
+nnoremap <leader>f :YcmCompleter FixIt<CR>
+nnoremap <leader>y :YcmCompleter<Space>
 nnoremap <leader>a za
+nnoremap <leader>A zA
 
 " }}}
 
@@ -238,6 +254,16 @@ let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
 "let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 "let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
+" Was messing with mbed/arduino projects.
+let g:ycm_clangd_args = ["--header-insertion=never"]
+let g:ycm_clangd_binary_path = "/usr/local/opt/llvm/bin/clangd"
+let g:ycm_clangd_uses_ycmd_caching = 0
+
+" == nerdcommenter ==
+let g:NERDTrimTrailingWhitespace = 1
+let g:NERDCommentEmptyLines = 1
+let g:NERDCommentWholeLinesInVMode = 1
+let g:NERDSpaceDelims = 1
 
 " == Statusline ==
 set statusline+=%#warningmsg#
@@ -250,7 +276,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-
+let g:syntastic_python_python_exec = '/usr/bin/local/python3'
 let g:syntastic_quiet_messages = { 'regex': 'snake_case\|superfluous-parens\|missing-module-docstring' }
 " == Syntastic - Racket Settings ==
 "let g:syntastic_enable_racket_racket_checker = 1
@@ -327,12 +353,12 @@ augroup END
 
 " C & C++ file settings
 let c_syntax_for_h = 1
-let c_no_comment_fold = 1
+"let c_no_comment_fold = 1
 augroup filetype_cpp
     autocmd!
     " fold by syntax
-    autocmd Syntax c setlocal foldmethod=syntax
-    autocmd Syntax c setlocal foldlevel=2
+    autocmd Syntax c,cpp setlocal foldmethod=syntax
+    "autocmd Syntax c setlocal foldlevel=2
     " Run Autoformat on write.
     autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
 augroup END
@@ -347,6 +373,24 @@ augroup END
 augroup filetype_markdown
     autocmd!
     autocmd FileType markdown setlocal textwidth=100
+augroup END
+
+augroup filetype_html
+    autocmd!
+    autocmd FileType html setlocal textwidth=0
+    autocmd FileType html setlocal tabstop=2
+    autocmd FileType html setlocal shiftwidth=2
+    autocmd FileType html setlocal softtabstop=2
+    autocmd FileType html setlocal autoindent
+augroup END
+
+augroup filetype_php
+    autocmd!
+    autocmd FileType php setlocal textwidth=0
+    autocmd FileType php setlocal tabstop=2
+    autocmd FileType php setlocal shiftwidth=2
+    autocmd FileType php setlocal softtabstop=2
+    autocmd FileType php setlocal autoindent
 augroup END
 
 " Haskell file settings
