@@ -40,6 +40,8 @@ export LC_ALL=en_US.UTF-8
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export FPATH=$FPATH:$HOME/zpath
 #export PATH=$PATH:$HOME/.local/bin:$HOME/.gem/ruby/2.7.0/bin
+# Makes OpenJDK the default.
+#export PATH=/usr/local/opt/openjdk/bin:$PATH
 
 #compdef pio
 _pio() {

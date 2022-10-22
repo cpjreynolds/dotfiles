@@ -189,7 +189,7 @@ set shiftwidth=4
 set softtabstop=4
 
 " Folding settings
-set foldcolumn=4
+set foldcolumn=1
 "set foldlevelstart=1
 
 " Distinguish the character limit with a colored column.
@@ -276,7 +276,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_python_python_exec = '/usr/bin/local/python3'
+let g:syntastic_python_python_exec = '/usr/local/bin/python3'
 let g:syntastic_quiet_messages = { 'regex': 'snake_case\|superfluous-parens\|missing-module-docstring' }
 " == Syntastic - Racket Settings ==
 "let g:syntastic_enable_racket_racket_checker = 1
@@ -291,9 +291,9 @@ let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-""let g:airline_symbols.space = "\ua0"
+"let g:airline_symbols.space = '\ua0'
 " TODO: This might need to be conditional on osx or linux
-""let g:airline_symbols.linenr = "= "
+"let g:airline_symbols.linenr = '= '
 
 let g:airline_theme = "solarized"
 let g:airline_solarized_bg = "dark"
@@ -363,6 +363,12 @@ augroup filetype_cpp
     autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
 augroup END
 
+" Python file settings
+augroup filetype_python
+    autocmd!
+    autocmd Syntax python setlocal foldmethod=indent
+augroup END
+
 " Racket file settings
 "augroup filetype_racket
     "autocmd!
@@ -372,7 +378,7 @@ augroup END
 
 augroup filetype_markdown
     autocmd!
-    autocmd FileType markdown setlocal textwidth=100
+    autocmd FileType markdown setlocal textwidth=80
 augroup END
 
 augroup filetype_html
