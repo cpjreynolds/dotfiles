@@ -67,7 +67,7 @@ Plugin 'scrooloose/syntastic'
 " == Language ==
 
 " Rust
-"Plugin 'rust-lang/rust.vim'
+Plugin 'rust-lang/rust.vim'
 
 " GLSL
 "Plugin 'tikhomirov/vim-glsl'
@@ -252,8 +252,8 @@ let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
 "let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_autoclose_preview_window_after_insertion = 0
-"let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
 " Was messing with mbed/arduino projects.
 let g:ycm_clangd_args = ["--header-insertion=never"]
 let g:ycm_clangd_binary_path = "/usr/local/opt/llvm/bin/clangd"
@@ -272,8 +272,8 @@ set statusline+=%*
 set statusline+=%{fugitive#statusline()}
 
 " == Syntastic ==
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 2
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_python_exec = '/usr/local/bin/python3'

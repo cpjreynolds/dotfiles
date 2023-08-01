@@ -42,6 +42,8 @@ export FPATH=$FPATH:$HOME/zpath
 #export PATH=$PATH:$HOME/.local/bin:$HOME/.gem/ruby/2.7.0/bin
 # Makes OpenJDK the default.
 #export PATH=/usr/local/opt/openjdk/bin:$PATH
+# folder for random development binaries I want on the $PATH
+export PATH=$PATH:$HOME/DevBinaries
 
 #compdef pio
 _pio() {
