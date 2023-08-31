@@ -101,6 +101,9 @@ Plugin 'stanangeloff/php.vim'
 " Kotlin
 "Plugin 'udalov/kotlin-vim'
 
+" 6502 Assembly
+Plugin 'maxbane/vim-asm_ca65'
+
 " == Misc ==
 
 " Vimproc
@@ -200,7 +203,7 @@ set ttyfast
 
 " Enable mouse with urxvt mode.
 set mouse=a
-set ttymouse=urxvt
+"set ttymouse=xterm2
 
 " Pane splitting settings.
 " set diffopt complained on macOS.
@@ -397,6 +400,11 @@ augroup filetype_php
     autocmd FileType php setlocal shiftwidth=2
     autocmd FileType php setlocal softtabstop=2
     autocmd FileType php setlocal autoindent
+augroup END
+
+" Recognize *.s and *.inc as 6502 assembly files
+augroup filetype_ca65
+    autocmd BufNewFile,BufRead *.s,*.inc setlocal filetype=asm_ca65
 augroup END
 
 " Haskell file settings
