@@ -10,3 +10,6 @@ AccessModifierOffset: -4
 AllowShortFunctionsOnASingleLine: Inline
 AlwaysBreakTemplateDeclarations: true
 SpaceAfterTemplateKeyword: false
+AllowShortCompoundRequirementOnASingleLine: true
+AllowShortBlocksOnASingleLine: Always
+AlignArrayOfStructures: Left

@@ -70,10 +70,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'rust-lang/rust.vim'
 
 " GLSL
-"Plugin 'tikhomirov/vim-glsl'
+Plugin 'tikhomirov/vim-glsl'
 
 " TOML
-"Plugin 'cespare/vim-toml'
+Plugin 'cespare/vim-toml'
 
 " C++
 Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -193,7 +193,7 @@ set softtabstop=4
 
 " Folding settings
 set foldcolumn=1
-"set foldlevelstart=1
+set foldlevelstart=0
 
 " Distinguish the character limit with a colored column.
 set colorcolumn=+1
@@ -256,11 +256,13 @@ let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
 "let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_semantic_triggers = {'cpp': ['_']}
 let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
 " Was messing with mbed/arduino projects.
-let g:ycm_clangd_args = ["--header-insertion=never"]
+"let g:ycm_clangd_args = ["--header-insertion=never"]
 let g:ycm_clangd_binary_path = "/usr/local/opt/llvm/bin/clangd"
-let g:ycm_clangd_uses_ycmd_caching = 0
+"let g:ycm_clangd_uses_ycmd_caching = 0
+let g:ycm_global_ycm_extra_conf = '/Users/cpjreynolds/.ycm_extra_conf.py'
 
 " == nerdcommenter ==
 let g:NERDTrimTrailingWhitespace = 1
@@ -313,10 +315,12 @@ let g:fastfold_minlines = 0
 
 " == C++ Syntax Highlighting ==
 let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
+let g:cpp_member_variable_highlight = 1
 let g:cpp_posix_standard = 1
-let g:cpp_experimental_template_highlight = 1
+"let g:cpp_experimental_template_highlight = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
 
 " == Scheme Autoformatting ==
 let g:formatdef_custom_racket = '"scmindent.rkt"'
@@ -345,6 +349,19 @@ let g:haskell_indent_guard = 2
 
 " == FileType Specific == {{{
 
+function LocalClangFormat()
+    if &modified
+        let cursor_pos = getpos('.')
+        :%!clang-format
+        call setpos('.', cursor_pos)
+    endif
+endfunction
+
+function OtherClangFormat()
+    let l:formatdiff = 1
+    py3f /usr/local/opt/llvm/share/clang/clang-format.py
+endfunction
+
 " Vimscript file settings
 augroup filetype_vim
     autocmd!
@@ -361,15 +378,23 @@ augroup filetype_cpp
     autocmd!
     " fold by syntax
     autocmd Syntax c,cpp setlocal foldmethod=syntax
-    "autocmd Syntax c setlocal foldlevel=2
+    autocmd Syntax c,cpp setlocal foldlevel=99
     " Run Autoformat on write.
-    autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
+    "autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
+    autocmd BufWritePre *.c,*.h,*.hpp,*.cpp :call OtherClangFormat()
 augroup END
 
 " Python file settings
 augroup filetype_python
     autocmd!
     autocmd Syntax python setlocal foldmethod=indent
+augroup END
+
+
+" glsl file settings
+augroup filetype_glsl
+    autocmd!
+    autocmd BufWritePre *.vert,*.frag,*.geom,*.comp :call LocalClangFormat()
 augroup END
 
 " Racket file settings
@@ -402,10 +427,15 @@ augroup filetype_php
     autocmd FileType php setlocal autoindent
 augroup END
 
-" Recognize *.s and *.inc as 6502 assembly files
-augroup filetype_ca65
-    autocmd BufNewFile,BufRead *.s,*.inc setlocal filetype=asm_ca65
+augroup filetype_toml
+    autocmd!
+    autocmd BufNewFile,BufRead *.toml.in setlocal filetype=toml
 augroup END
+
+" Recognize *.s and *.inc as 6502 assembly files
+"augroup filetype_ca65
+    "autocmd BufNewFile,BufRead *.s,*.inc setlocal filetype=asm_ca65
+"augroup END
 
 " Haskell file settings
 "augroup filetype_haskell

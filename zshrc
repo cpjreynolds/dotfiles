@@ -34,6 +34,14 @@ eval $(thefuck --alias)
 
 #export TERM=rxvt-unicode
 
+#because apple clang blows
+#export CC=gcc-13
+#export CXX=gcc-13
+
+alias clang++17=/usr/local/opt/llvm/bin/clang++
+
+#export CMAKE_GENERATOR=Ninja
+
 export CLICOLOR=1
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -44,6 +52,8 @@ export FPATH=$FPATH:$HOME/zpath
 #export PATH=/usr/local/opt/openjdk/bin:$PATH
 # folder for random development binaries I want on the $PATH
 export PATH=$PATH:$HOME/DevBinaries
+
+export PATH=$PATH:"/usr/local/opt/llvm/bin"
 
 #compdef pio
 _pio() {
