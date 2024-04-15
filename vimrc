@@ -192,7 +192,7 @@ set shiftwidth=4
 set softtabstop=4
 
 " Folding settings
-set foldcolumn=1
+set foldcolumn=2
 set foldlevelstart=0
 
 " Distinguish the character limit with a colored column.
@@ -259,7 +259,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_semantic_triggers = {'cpp': ['_']}
 let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
 " Was messing with mbed/arduino projects.
-"let g:ycm_clangd_args = ["--header-insertion=never"]
+let g:ycm_clangd_args = ["--header-insertion=never"]
 let g:ycm_clangd_binary_path = "/usr/local/opt/llvm/bin/clangd"
 "let g:ycm_clangd_uses_ycmd_caching = 0
 let g:ycm_global_ycm_extra_conf = '/Users/cpjreynolds/.ycm_extra_conf.py'
@@ -318,8 +318,8 @@ let g:cpp_class_scope_highlight = 1
 let g:cpp_class_decl_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_posix_standard = 1
-"let g:cpp_experimental_template_highlight = 1
-let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+"let g:cpp_experimental_simple_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 
 " == Scheme Autoformatting ==
@@ -378,7 +378,7 @@ augroup filetype_cpp
     autocmd!
     " fold by syntax
     autocmd Syntax c,cpp setlocal foldmethod=syntax
-    autocmd Syntax c,cpp setlocal foldlevel=99
+    autocmd Syntax c,cpp setlocal foldlevel=2
     " Run Autoformat on write.
     "autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
     autocmd BufWritePre *.c,*.h,*.hpp,*.cpp :call OtherClangFormat()
