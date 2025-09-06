@@ -4,12 +4,13 @@ PointerAlignment: Left
 DerivePointerAlignment: false
 BreakBeforeBraces: Stroustrup
 SortIncludes: false
+#ColumnLimit: 80
+BreakConstructorInitializers: BeforeColon
+PackConstructorInitializers: CurrentLine
 
 Language: Cpp
 AccessModifierOffset: -4
-AllowShortFunctionsOnASingleLine: All
+AllowShortFunctionsOnASingleLine: Inline
 AlwaysBreakTemplateDeclarations: true
 SpaceAfterTemplateKeyword: false
-AllowShortCompoundRequirementOnASingleLine: true
-AllowShortBlocksOnASingleLine: Always
-AlignArrayOfStructures: Left
+#AlignArrayOfStructures: Left

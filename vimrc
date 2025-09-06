@@ -33,6 +33,9 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-fugitive'
 
 " == Utility ==
+"Plugin 'kien/rainbow_parentheses.vim'
+" Surrounding braces
+Plugin 'tpope/vim-surround'
 
 " Statusline.
 Plugin 'vim-airline/vim-airline'
@@ -57,7 +60,6 @@ Plugin 'scrooloose/nerdcommenter'
 
 " Realtime completion.
  Plugin 'Valloric/YouCompleteMe'
-" Plugin 'rdnetto/ycm-generator'
 
 " == Syntax ==
 
@@ -123,8 +125,11 @@ filetype plugin indent on
 " the initial insert cursor position.
 set backspace=indent,eol,start
 
+set nottybuiltin
+
 " Indentation
 " set cindent
+set cinoptions=
 set cinoptions+=N-s
 set cinoptions+=g0
 set cinoptions+=+0
@@ -143,8 +148,13 @@ set hidden
 " Enable incremental searching.
 set incsearch
 
-" Enable search highlighting.
-set hlsearch
+" for some reason, reloading vimrc without a guard on THIS option, breaks
+" airline.... huh.
+if !exists('b:did_hlsearch')
+    " Enable search highlighting.
+    set hlsearch
+let b:did_hlsearch=1
+endif
 
 " Set background to Solarized Dark.
 set background=dark
@@ -192,8 +202,8 @@ set shiftwidth=4
 set softtabstop=4
 
 " Folding settings
-set foldcolumn=2
-set foldlevelstart=0
+set foldcolumn=1
+"set foldlevelstart=0
 
 " Distinguish the character limit with a colored column.
 set colorcolumn=+1
@@ -215,10 +225,22 @@ set splitright
 set timeoutlen=1000
 set ttimeoutlen=0
 
+set completepopup=border:off,align:item
+
+hi Todo cterm=bold ctermfg=13
+hi Error cterm=bold ctermfg=9
 
 " }}}
 
 " == Key Mappings == {{{
+
+function! ToggleLocList()
+    if empty(filter(getwininfo(), 'v:val.loclist'))
+        lopen
+    else
+        lclose
+    endif
+endfunction
 
 " Instead of setting mapleader to <Space>, map <Space> to <leader>.
 " This way it will pop up in the showcmd corner. (Thank you /u/pandubear).
@@ -238,12 +260,76 @@ noremap <C-l> <C-w>l
 
 " Convenience mappings
 nnoremap <leader>n :NERDTreeToggle<CR>
-"nnoremap <leader>p :CtrlP<CR>
+nnoremap <leader>p :CtrlP<CR>
 "nnoremap <leader>t :TagbarToggle<CR>
+
 nnoremap <leader>f :YcmCompleter FixIt<CR>
 nnoremap <leader>y :YcmCompleter<Space>
+nnoremap <leader>t :YcmCompleter GetType<CR>
+
+nnoremap <leader>go :YcmCompleter GoToDocumentOutline<CR>
+nnoremap <leader>gg :vertical YcmCompleter GoTo<CR>
+nnoremap <leader>gh :vertical YcmCompleter GoToAlternateFile<CR>
+nnoremap <leader>gd :YcmCompleter GetDoc<CR>
+nnoremap <leader>gc :vertical YcmCompleter GoToCallers<CR>
+nnoremap <leader>r :YcmCompleter RefactorRename<space>
+nnoremap <leader>i <Plug>(YCMToggleInlayHints)
+nnoremap <leader>l :YcmDiags<CR>
+nnoremap <leader>- :call ToggleLocList()<CR>
+
+nnoremap <leader>/ :YcmForceCompileAndDiagnostics<CR>
+
+nnoremap <leader>h <Plug>(YCMHover)
+nnoremap <leader>sw <Plug>(YCMFindSymbolInWorkspace)
+nnoremap <leader>sf <Plug>(YCMFindSymbolInDocument)
+
+" fix and loc
+"
+nnoremap <leader>q :cwindow<CR>
+
+" buffers
+nnoremap <leader>bn :bn<CR>
+nnoremap <leader>bp :bp<CR>
+nnoremap <leader>bd :bd<CR>
+nnoremap <leader>bsn :vert sbn<CR>
+nnoremap <leader>bsp :vert sbp<CR>
+
+" folding
 nnoremap <leader>a za
 nnoremap <leader>A zA
+
+" convenience for creating highlight rules
+function GetSyntax()
+    return synIDattr(synID(line("."), col("."), 1), "name")
+endfunction
+
+function GetTextProp()
+    let l:plist = prop_list(line('.'))
+    for prop in l:plist
+        let l:startcol = prop.col
+        let l:endcol = l:startcol + prop.length
+        let l:curcol = col('.')
+        if curcol >= startcol && curcol < endcol
+            return prop.type
+        endif
+    endfor
+    return ""
+endfunction
+
+function ShowSynAndText()
+    let l:synval = GetSyntax()
+    let l:propval = GetTextProp()
+
+    if len(synval) > 0
+        echo synval
+    endif
+    if len(propval) > 0
+        echo propval
+    endif
+endfunction
+
+nnoremap <leader>ss :call ShowSynAndText()<CR>
+nnoremap <leader>sr :so $MYVIMRC<CR>
 
 " }}}
 
@@ -251,18 +337,42 @@ nnoremap <leader>A zA
 
 " == YouCompleteMe ==
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_seed_identifiers_with_syntax = 1
+
+let g:ycm_clangd_binary_path = trim(system('brew --prefix llvm')).'/bin/clangd'
+let g:ycm_clangd_args = ["--header-insertion=never"]
+
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
-"let g:ycm_add_preview_to_completeopt = 0
+
+"let g:ycm_seed_identifiers_with_syntax = 0
+let g:ycm_add_preview_to_completeopt = 'popup'
 let g:ycm_autoclose_preview_window_after_insertion = 1
+"let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_semantic_triggers = {'cpp': ['_']}
-let g:ycm_rust_src_path = '/home/cpjreynolds/rust/src'
-" Was messing with mbed/arduino projects.
-let g:ycm_clangd_args = ["--header-insertion=never"]
-let g:ycm_clangd_binary_path = "/usr/local/opt/llvm/bin/clangd"
-"let g:ycm_clangd_uses_ycmd_caching = 0
-let g:ycm_global_ycm_extra_conf = '/Users/cpjreynolds/.ycm_extra_conf.py'
+
+let g:ycm_update_diagnostics_in_insert_mode = 1
+let g:ycm_show_detailed_diag_in_popup = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+let g:ycm_echo_current_diagnostic = 1
+
+let g:ycm_enable_semantic_highlighting = 1
+
+let g:ycm_enable_inlay_hint = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 0
+
+let g:ycm_goto_buffer_command = 'split-or-existing-window'
+
+let &t_Cs = "\e[4:3m"
+
+hi YcmErrorSection cterm=undercurl ctermul=1
+hi YcmWarningSection cterm=undercurl ctermul=13
+
+" == Rainbow Parens ==
+"au VimEnter * RainbowParenthesesToggle
+"au Syntax * RainbowParenthesesLoadRound
+"au Syntax * RainbowParenthesesLoadSquare
+"au Syntax * RainbowParenthesesLoadBraces
+"au Syntax * RainbowParenthesesLoadChevrons
 
 " == nerdcommenter ==
 let g:NERDTrimTrailingWhitespace = 1
@@ -271,10 +381,10 @@ let g:NERDCommentWholeLinesInVMode = 1
 let g:NERDSpaceDelims = 1
 
 " == Statusline ==
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set statusline+=%{fugitive#statusline()}
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"set statusline+=%{fugitive#statusline()}
 
 " == Syntastic ==
 let g:syntastic_always_populate_loc_list = 0
@@ -314,13 +424,15 @@ let g:rustfmt_autosave = 1
 let g:fastfold_minlines = 0
 
 " == C++ Syntax Highlighting ==
-let g:cpp_class_scope_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_posix_standard = 1
-let g:cpp_experimental_template_highlight = 1
-"let g:cpp_experimental_simple_template_highlight = 1
-let g:cpp_concepts_highlight = 1
+if (!g:ycm_enable_semantic_highlighting)
+    let g:cpp_class_scope_highlight = 1
+    let g:cpp_class_decl_highlight = 1
+    let g:cpp_member_variable_highlight = 1
+    "let g:cpp_experimental_template_highlight = 1
+    "let g:cpp_experimental_simple_template_highlight = 1
+    let g:cpp_posix_standard = 1
+    let g:cpp_concepts_highlight = 1
+endif
 
 " == Scheme Autoformatting ==
 let g:formatdef_custom_racket = '"scmindent.rkt"'
@@ -347,6 +459,122 @@ let g:haskell_indent_guard = 2
 
 " }}}
 
+" == C++ semantic highlighting {{{
+
+hi def link lsp_type Normal
+hi def link lsp_class Normal
+hi def link lsp_enum Normal
+hi def link lsp_interface Normal
+hi def link lsp_struct Normal
+hi def link lsp_typeParameter Normal
+hi def link lsp_parameter Normal
+hi def link lsp_variable Normal
+hi def link lsp_property Normal
+hi def link lsp_enumMember Normal
+hi def link lsp_event Normal
+hi def link lsp_function Normal
+hi def link lsp_method Normal
+hi def link lsp_macro Normal
+hi def link lsp_keyword Normal
+hi def link lsp_modifier Normal
+hi def link lsp_comment Normal
+hi def link lsp_string Normal
+hi def link lsp_number Normal
+hi def link lsp_regexp Normal
+hi def link lsp_operator Normal
+hi def link lsp_concept Normal
+hi def link lsp_namespace Normal
+hi def link lsp_bracket Normal
+
+let YCM_LSP_HIGHLIGHTS = [
+            \'type',
+            \'class',
+            \'enum',
+            \'interface',
+            \'struct',
+            \'typeParameter',
+            \'parameter',
+            \'variable',
+            \'property',
+            \'enumMember',
+            \'event',
+            \'function',
+            \'method',
+            \'macro',
+            \'keyword',
+            \'modifier',
+            \'comment',
+            \'string',
+            \'number',
+            \'regexp',
+            \'operator',
+            \'concept',
+            \'namespace',
+            \'bracket',]
+
+if !exists('g:loaded_lsp_groups')
+    for token_type in YCM_LSP_HIGHLIGHTS
+        call prop_type_add('YCM_HL_'.token_type, {'highlight':'lsp_'.token_type})
+    endfor
+    let g:loaded_lsp_groups = 1
+endif
+
+function SetupCppSyntax()
+    syntax keyword cppConcept concept requires
+    hi link cppConcept Statement
+    "hi link cppTemplate Statement
+
+    "syntax keyword cppStruct class namespace
+    "hi link cppStruct Structure
+    "syntax keyword cppTypename typename
+    "hi link cppTypename BaseType
+endfunction
+
+function SetupCppHighlight()
+    call SetupCppSyntax()
+
+    hi! sYellow ctermfg=3
+    hi! sOrange ctermfg=9
+    hi! sRed ctermfg=1
+    hi! sMagenta ctermfg=5
+    hi! sViolet ctermfg=13
+    hi! sBlue ctermfg=4
+    hi! sCyan ctermfg=6
+    hi! sGreen ctermfg=2
+
+    hi! sBase1 ctermfg=14 " emphasis
+    hi! sBase01 ctermfg=10 " comments
+    hi! sBase0 ctermfg=12 " normal
+
+    hi! lsp_concept cterm=italic,bold ctermfg=4
+    hi! lsp_property ctermfg=12 cterm=bold
+    hi! lsp_parameter ctermfg=14
+    hi! lsp_typeParameter ctermfg=13 cterm=bold
+    hi! lsp_enumMember ctermfg=6 cterm=italic
+
+    hi! BaseType ctermfg=3 cterm=italic
+    hi link cType BaseType
+
+    hi link lsp_macro Special
+    hi link lsp_type BaseType
+    hi link lsp_class Type
+    hi link lsp_enum Type
+    hi link lsp_struct Type
+    hi link lsp_function Function
+    hi link lsp_method Function
+    hi lsp_namespace ctermfg=6
+    hi lsp_bracket ctermfg=14
+
+    hi! Structure ctermfg=3
+    hi! StorageClass ctermfg=9
+    hi! cppAccess ctermfg=2 cterm=bold
+    hi link cppModifier StorageClass
+
+    hi cppSTLexception ctermfg=2 cterm=nocombine
+endfunction
+
+" }}}
+
 " == FileType Specific == {{{
 
 function LocalClangFormat()
@@ -359,7 +587,7 @@ endfunction
 
 function OtherClangFormat()
     let l:formatdiff = 1
-    py3f /usr/local/opt/llvm/share/clang/clang-format.py
+    py3f /opt/homebrew/opt/llvm/share/clang/clang-format.py
 endfunction
 
 " Vimscript file settings
@@ -377,11 +605,11 @@ let c_syntax_for_h = 1
 augroup filetype_cpp
     autocmd!
     " fold by syntax
-    autocmd Syntax c,cpp setlocal foldmethod=syntax
-    autocmd Syntax c,cpp setlocal foldlevel=2
+    autocmd FileType c,cpp setlocal foldmethod=syntax
+    "autocmd FileType c,cpp setlocal foldlevelstart=2
+    autocmd FileType cpp call SetupCppHighlight()
     " Run Autoformat on write.
-    "autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
-    autocmd BufWritePre *.c,*.h,*.hpp,*.cpp :call OtherClangFormat()
+    autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :YcmCompleter Format
 augroup END
 
 " Python file settings
@@ -389,7 +617,6 @@ augroup filetype_python
     autocmd!
     autocmd Syntax python setlocal foldmethod=indent
 augroup END
-
 
 " glsl file settings
 augroup filetype_glsl
@@ -431,6 +658,68 @@ augroup filetype_toml
     autocmd!
     autocmd BufNewFile,BufRead *.toml.in setlocal filetype=toml
 augroup END
+
+function LocalJSONFormat()
+    if &modified
+        let cursor_pos = getpos('.')
+        let l:input = join(getline(1, '$'), "\n")
+        let l:output = systemlist('jq', l:input)
+        if v:shell_error == 0
+            call setline(1, l:output)
+            if line('$') > len(l:output)
+                execute (len(l:output)+1) . ',$delete _'
+            endif
+            call setloclist(0, [])
+            lclose
+        else
+            let l:items = []
+            for l:msg in l:output
+                let l:m = matchlist(l:msg, 'line \(\d\+\), column \(\d\+\)')
+                if len(l:m) >= 3
+                    call add(l:items, {
+                        \ 'bufnr': bufnr('%'),
+                        \ 'lnum': str2nr(l:m[1]),
+                        \ 'col':  str2nr(l:m[2]),
+                        \ 'text': l:msg,
+                        \ 'type': 'E'
+                        \ })
+                    let l:cursor_pos[1] = str2nr(l:m[1])
+                    let l:cursor_pos[2] = str2nr(l:m[2])
+                else
+                    call add(l:items, {
+                        \ 'bufnr': bufnr('%'),
+                        \ 'lnum': 1,
+                        \ 'col':  1,
+                        \ 'text': l:msg,
+                        \ 'type': 'E'
+                        \ })
+                endif
+            endfor
+
+            if empty(l:items)
+                call add(l:items, {
+                      \ 'bufnr': bufnr('%'),
+                      \ 'lnum': 1,
+                      \ 'col':  1,
+                      \ 'text': 'jq failed (no stderr captured)',
+                      \ 'type': 'E'
+                      \ })
+            endif
+
+            " Replace loclist and open it (bottom), keep buffer unchanged
+            call setloclist(0, l:items, 'r')
+            lopen 1
+        endif
+
+        call setpos('.', cursor_pos)
+    endif
+endfunction
+
+augroup filetype_json
+    autocmd!
+    autocmd FileType json autocmd BufWritePre <buffer> call LocalJSONFormat()
+augroup END
+
 
 " Recognize *.s and *.inc as 6502 assembly files
 "augroup filetype_ca65
@@ -493,3 +782,4 @@ function! RustFold(lnum)
 endfunction
 
 " }}}
+
